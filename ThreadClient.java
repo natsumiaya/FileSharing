@@ -15,6 +15,7 @@ import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.io.Serializable;
 
 /**
  *
@@ -90,5 +91,27 @@ return sockClient;
 */
 public void setSockClient(Socket sockClient) {
 this.sockClient = sockClient;
+}
+//}
+
+/*
+Chat Message Class
+*/
+public class ChatMessage implements Serializable
+{
+  private static long serialVersionUID = 1l
+  public String type, sender, content, recipient;
+  
+  public ChatMessage(String type, String sender, String content, String recipient)
+  {
+    this.type = type;
+    this.sender = sender;
+    this.content = content;
+    this.recipient = recipient;
+  }
+  public String toString()
+  {
+   return "{type='"+type+"', sender='"+sender+"', content='"+content+"',recipient='"+recipient+"'}";
+  }
 }
 }
