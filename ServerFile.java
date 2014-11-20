@@ -5,11 +5,9 @@
  */
 package serverfile;
 
-import java.io.File;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import objectfile.ObjectFile;
 
 /**
  *
@@ -25,34 +23,21 @@ public class ServerFile {
         try {
             ArrayList<ThreadClient> allThread = new ArrayList<>();
             ServerSocket server = new ServerSocket(9090);
-            Socket socket;
-            new File("F:/cache").mkdirs();
-            
-            ObjectFile of = null;
-            while (true) {                
-            
-                socket = server.accept();
-                System.out.println(socket.getInetAddress().toString()+" masuk\r\n");
+            while (true) 
+            {                
+                Socket socketClient = server.accept();
+                System.out.println(socketClient.getInetAddress().toString()+" Client masuk");
                 synchronized(allThread)
                 {
-                    ThreadClient tc = new ThreadClient(socket,allThread);
+                    ThreadClient tc = new ThreadClient(socketClient,allThread);
                     allThread.add(tc);
                     Thread t = new Thread(tc);
                     t.start();
                 }
-                
-
-                
-                //System.out.println(of.getIsi() + of.getNama() + of.getUser() + of.getCommand());
-                
-                
-            }
-            //socket.close();
-            //server.close();
+            }            
         } 
         catch(Exception e)
         {
-            e.printStackTrace();
         }
                 
     }
