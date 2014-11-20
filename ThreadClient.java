@@ -8,6 +8,9 @@ package serverfile;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -24,20 +27,22 @@ import objectfile.ObjectFile;
  */
 public class ThreadClient implements Runnable {
     private Socket socketClient;
-    private ArrayList<ThreadClient> alThread;
+    private ArrayList<ThreadClient> allThread;
     private BufferedReader br = null;
     private BufferedOutputStream bos = null;
     private DataInputStream dis = null;
-    private SocketAddress sa = null;
-    public int BUFFER_SIZE = 1024;   
+    private SocketAddress sa = null;   
     private ObjectOutputStream ous;
     private ObjectInputStream ois;
     private String nama;
+    private String fnama;
+    private DataOutputStream doStream;
+    public int BUFFER_SIZE = 1024;
     
-    public ThreadClient(Socket socketClient, ArrayList<ThreadClient> alThread)
+    public ThreadClient(Socket socketClient, ArrayList<ThreadClient> allThread)
     {
         this.socketClient = socketClient;
-        this.alThread = alThread;
+        this.allThread = allThread;
         this.sa = socketClient.getRemoteSocketAddress();
     }
     
@@ -47,25 +52,40 @@ public class ThreadClient implements Runnable {
         try {
             ous  = new ObjectOutputStream(socketClient.getOutputStream());
             ois = new ObjectInputStream(socketClient.getInputStream());
-            ObjectFile of = new ObjectFile();
+            new File("F:/cache").mkdirs();
+            ObjectFile objf = new ObjectFile();
             try {
-                while((of = (ObjectFile) ois.readObject()) != null)
+                while((objf = (ObjectFile) ois.readObject()) != null)
                 {
-                    if(of.getCommand().equals("konek"))
+                    if(objf.getCommand().equals("konek"))
                     {
-                        this.nama = of.getUser();
+                        this.nama = objf.getUser();
                     }
-                    for (int i = 0; i < this.alThread.size(); i++) {
-                        System.out.println("nama : "+ alThread.get(i).nama);
+                    else if(objf.getCommand().equals("kirim"))
+                    {
+                        System.out.println("tulis");
+                        //ObjectFile objfn = (ObjectFile) ois.readObject();
+                        this.fnama = objf.getNama();
+                        File file = new File("F:/cache/" + objf.getNama());
+                        doStream = new DataOutputStream(new FileOutputStream(file));
+                        doStream.write(objf.getIsi());
+                        System.out.println("file write");
                     }
+                    for (int i = 0; i < this.allThread.size(); i++) {
+                        System.out.println("nama : "+ allThread.get(i).nama);
+                    }
+                    for (int i = 0; i < this.allThread.size(); i++) {
+                        System.out.println("fnama : "+ allThread.get(i).fnama);
+                    }
+                    
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ThreadClient.class.getName()).log(Level.SEVERE, null, ex);
             }
             getSockClient().close();
-            synchronized(this.alThread)
+            synchronized(this.allThread)
             {
-                this.alThread.remove(this);
+                this.allThread.remove(this);
             }
         } catch (IOException ex) {
             Logger.getLogger(ThreadClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,9 +100,9 @@ public class ThreadClient implements Runnable {
     
     public synchronized void sendMessage(String msg) throws IOException
     {
-        for(int i=0;i<this.alThread.size();i++)
+        for(int i=0;i<this.allThread.size();i++)
         {
-            ThreadClient tc = this.alThread.get(i);
+            ThreadClient tc = this.allThread.get(i);
             tc.send(msg);
         }
     }
@@ -97,30 +117,8 @@ public class ThreadClient implements Runnable {
     /**
      * @param sockClient the sockClient to set
      */
-    public void setSockClient(Socket sockClient) {
+    public void setSocketClient(Socket sockClient) {
         this.socketClient = sockClient;
     }
     
-}
-
-/*
-Chat Message Class
-*/
-public class ChatMessage implements Serializable
-{
-  private static long serialVersionUID = 1l
-  public String type, sender, content, recipient;
-  
-  public ChatMessage(String type, String sender, String content, String recipient)
-  {
-    this.type = type;
-    this.sender = sender;
-    this.content = content;
-    this.recipient = recipient;
-  }
-  public String toString()
-  {
-   return "{type='"+type+"', sender='"+sender+"', content='"+content+"',recipient='"+recipient+"'}";
-  }
-}
 }
