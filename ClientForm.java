@@ -9,16 +9,16 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 import objectfile.ObjectFile;
 
 /**
@@ -47,23 +47,29 @@ public class ServerForm extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jFileChooser1 = new javax.swing.JFileChooser();
         host = new javax.swing.JTextField();
-        Host = new javax.swing.JLabel();
-        User = new javax.swing.JLabel();
         user = new javax.swing.JTextField();
         port = new javax.swing.JTextField();
+        Host = new javax.swing.JLabel();
+        User = new javax.swing.JLabel();
         Port = new javax.swing.JLabel();
-        list = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        listUser = new javax.swing.JButton();
         file = new javax.swing.JButton();
         kirim = new javax.swing.JButton();
         konek = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        listFile = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         jMenu3.setText("jMenu3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setForeground(new java.awt.Color(51, 244, 233));
+        setPreferredSize(new java.awt.Dimension(600, 650));
 
         host.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         host.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -73,12 +79,6 @@ public class ServerForm extends javax.swing.JFrame {
                 hostActionPerformed(evt);
             }
         });
-
-        Host.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        Host.setText("Host");
-
-        User.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        User.setText("User");
 
         user.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         user.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -92,14 +92,23 @@ public class ServerForm extends javax.swing.JFrame {
         port.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         port.setText("9090");
 
+        Host.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        Host.setText("Host");
+
+        User.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        User.setText("User");
+
         Port.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         Port.setText("Port");
 
-        list.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        list.setText("List User");
-        list.addActionListener(new java.awt.event.ActionListener() {
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel5.setText("WELCOME");
+
+        listUser.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        listUser.setText("List User");
+        listUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listActionPerformed(evt);
+                listUserActionPerformed(evt);
             }
         });
 
@@ -127,61 +136,87 @@ public class ServerForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel5.setText("WELCOME");
+        listFile.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        listFile.setText("List File");
+        listFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listFileActionPerformed(evt);
+            }
+        });
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane4.setViewportView(jTextArea2);
+        jList1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jScrollPane1.setViewportView(jList1);
+
+        jList2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jScrollPane2.setViewportView(jList2);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("User Aktif");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("File Client");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(214, 214, 214))
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(file, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addComponent(kirim, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(konek)
                                     .addComponent(host, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(37, 37, 37)
-                                        .addComponent(Host))
-                                    .addComponent(list))
+                                        .addComponent(Host)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
-                                        .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(66, 66, 66)
-                                        .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(109, 109, 109)
                                         .addComponent(User)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(Port)
-                                        .addGap(45, 45, 45)))))
-                        .addGap(35, 35, 35))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addGap(214, 214, 214))
+                                        .addGap(45, 45, 45))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(66, 66, 66)
+                                                .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(konek)
+                                .addGap(18, 18, 18)
+                                .addComponent(listUser)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1))
+                        .addGap(35, 35, 35))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(listFile)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(247, 247, 247)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Host, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(User)
@@ -192,29 +227,40 @@ public class ServerForm extends javax.swing.JFrame {
                     .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(konek)
-                .addGap(25, 25, 25)
-                .addComponent(list)
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(konek)
+                    .addComponent(listUser))
                 .addGap(18, 18, 18)
-                .addComponent(file)
-                .addGap(166, 166, 166)
-                .addComponent(kirim)
-                .addGap(163, 163, 163))
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(file)
+                    .addComponent(kirim))
+                .addGap(18, 18, 18)
+                .addComponent(listFile)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>                        
-    private Socket socket;
+    private Socket socketClient;
     private ObjectInputStream ois;
     private ObjectOutputStream ous;
-    //private DataInputStream diStream;
     private String fnama;
-    //private ObjectFile objf;
     private File fileChoose;
-    //private byte[] bytef;
-            
+    private String userRecv;
+    private String nama;
+    private ArrayList<String> lUser;
+        private ArrayList<String> lFile;
+    private DefaultListModel data;
+    private ObjectFile objf;
+    
     private void hostActionPerformed(java.awt.event.ActionEvent evt) {                                     
         // TODO add your handling code here:
     }                                    
@@ -223,15 +269,12 @@ public class ServerForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         try {
-            socket = new Socket(host.getText(), Integer.parseInt(port.getText()));
-            ois = new ObjectInputStream(socket.getInputStream());
-            ous = new ObjectOutputStream(socket.getOutputStream());
+            socketClient = new Socket(host.getText(), Integer.parseInt(port.getText()));
+            ois = new ObjectInputStream(socketClient.getInputStream());
+            ous = new ObjectOutputStream(socketClient.getOutputStream());
             ObjectFile objf = new ObjectFile();
-            //of.setIsi(bytef);
-            //of.setNama(f.getName());
-            //user.getText();
             objf.setUser(user.getText());
-            objf.setCommand("konek");
+            objf.setCommand("connect");
             kirim(objf);
             
         } catch (IOException ex) {
@@ -254,9 +297,25 @@ public class ServerForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                    
 
-    private void listActionPerformed(java.awt.event.ActionEvent evt) {                                     
+    private void listUserActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    }                                    
+        objf = new ObjectFile();
+        objf.setCommand("listUser");
+        kirim(objf);
+        try {
+            lUser = (ArrayList<String>) ois.readObject();
+            data = new DefaultListModel();
+            for (int i = 0; i < lUser.size(); i++) {
+                data.addElement(lUser.get(i));
+            }
+            jList1.setModel(data);
+            //this.recv();
+        } catch (IOException ex) {
+            Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }                                        
 
     private void fileActionPerformed(java.awt.event.ActionEvent evt) {                                     
         // TODO add your handling code here:
@@ -292,6 +351,24 @@ public class ServerForm extends javax.swing.JFrame {
             Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }                                     
+
+    private void listFileActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        objf = new ObjectFile();
+        objf.setCommand("listFile");
+        kirim(objf);
+        try {
+            lFile = (ArrayList<String>) ois.readObject();
+            for (int i = 0; i < lFile.size(); i++) {
+                data.addElement(lFile.get(i));
+            }
+            jList2.setModel(data);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    }                                        
 
     /**
      * @param args the command line arguments
@@ -333,13 +410,18 @@ public class ServerForm extends javax.swing.JFrame {
     private javax.swing.JButton file;
     private javax.swing.JTextField host;
     private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JList jList1;
+    private javax.swing.JList jList2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton kirim;
     private javax.swing.JButton konek;
-    private javax.swing.JButton list;
+    private javax.swing.JButton listFile;
+    private javax.swing.JButton listUser;
     private javax.swing.JTextField port;
     private javax.swing.JTextField user;
     // End of variables declaration                   
