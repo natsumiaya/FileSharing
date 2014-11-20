@@ -5,12 +5,20 @@
  */
 package clientfile;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import objectfile.ObjectFile;
 
 /**
@@ -18,6 +26,7 @@ import objectfile.ObjectFile;
  * @author MAgus
  */
 public class ServerForm extends javax.swing.JFrame {
+    
 
     /**
      * Creates new form ServerForm
@@ -36,27 +45,28 @@ public class ServerForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu3 = new javax.swing.JMenu();
+        jFileChooser1 = new javax.swing.JFileChooser();
         host = new javax.swing.JTextField();
-        konek = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        Host = new javax.swing.JLabel();
+        User = new javax.swing.JLabel();
         user = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
         port = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        konek1 = new javax.swing.JButton();
-        konek2 = new javax.swing.JButton();
-        konek3 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList();
-        jLabel4 = new javax.swing.JLabel();
+        Port = new javax.swing.JLabel();
+        list = new javax.swing.JButton();
+        file = new javax.swing.JButton();
+        kirim = new javax.swing.JButton();
+        konek = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
 
         jMenu3.setText("jMenu3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(450, 550));
+        setForeground(new java.awt.Color(51, 244, 233));
 
+        host.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        host.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         host.setText("127.0.0.1");
         host.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,6 +74,52 @@ public class ServerForm extends javax.swing.JFrame {
             }
         });
 
+        Host.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        Host.setText("Host");
+
+        User.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        User.setText("User");
+
+        user.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        user.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        user.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userActionPerformed(evt);
+            }
+        });
+
+        port.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        port.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        port.setText("9090");
+
+        Port.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        Port.setText("Port");
+
+        list.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        list.setText("List User");
+        list.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listActionPerformed(evt);
+            }
+        });
+
+        file.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        file.setText("File");
+        file.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileActionPerformed(evt);
+            }
+        });
+
+        kirim.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        kirim.setText("Kirim");
+        kirim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kirimActionPerformed(evt);
+            }
+        });
+
+        konek.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         konek.setText("Connect");
         konek.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,132 +127,81 @@ public class ServerForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Host");
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel5.setText("WELCOME");
 
-        jLabel2.setText("User");
-
-        user.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userActionPerformed(evt);
-            }
-        });
-
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
-
-        port.setText("9090");
-
-        jLabel3.setText("Port");
-
-        konek1.setText("List User");
-        konek1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                konek1ActionPerformed(evt);
-            }
-        });
-
-        konek2.setText("File");
-        konek2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                konek2ActionPerformed(evt);
-            }
-        });
-
-        konek3.setText("Kirim");
-        konek3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                konek3ActionPerformed(evt);
-            }
-        });
-
-        jList2.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(jList2);
-
-        jLabel4.setText("Form");
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane4.setViewportView(jTextArea2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
-                        .addContainerGap())
+                        .addComponent(file, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(kirim, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(93, 93, 93)
-                                                .addComponent(jLabel2))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(130, 130, 130)
-                                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(host, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(27, 27, 27)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(konek)
-                            .addComponent(konek1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(konek2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(konek3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
-                    .addContainerGap()))
+                                    .addComponent(konek)
+                                    .addComponent(host, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(37, 37, 37)
+                                        .addComponent(Host))
+                                    .addComponent(list))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                                        .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(66, 66, 66)
+                                        .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(109, 109, 109)
+                                        .addComponent(User)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(Port)
+                                        .addGap(45, 45, 45)))))
+                        .addGap(35, 35, 35))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(214, 214, 214))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Host, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(User)
+                    .addComponent(Port))
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(host, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(konek)
+                .addGap(25, 25, 25)
+                .addComponent(list)
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(konek1)
-                .addGap(163, 163, 163)
-                .addComponent(konek2)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(konek3)
-                .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(168, 168, 168)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(233, Short.MAX_VALUE)))
+                .addComponent(file)
+                .addGap(166, 166, 166)
+                .addComponent(kirim)
+                .addGap(163, 163, 163))
         );
 
         pack();
@@ -204,6 +209,11 @@ public class ServerForm extends javax.swing.JFrame {
     private Socket socket;
     private ObjectInputStream ois;
     private ObjectOutputStream ous;
+    //private DataInputStream diStream;
+    private String fnama;
+    //private ObjectFile objf;
+    private File fileChoose;
+    //private byte[] bytef;
             
     private void hostActionPerformed(java.awt.event.ActionEvent evt) {                                     
         // TODO add your handling code here:
@@ -213,17 +223,16 @@ public class ServerForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         try {
-            System.out.println(host.getText()+Integer.parseInt(port.getText()));
             socket = new Socket(host.getText(), Integer.parseInt(port.getText()));
             ois = new ObjectInputStream(socket.getInputStream());
             ous = new ObjectOutputStream(socket.getOutputStream());
-            ObjectFile of = new ObjectFile();
+            ObjectFile objf = new ObjectFile();
             //of.setIsi(bytef);
             //of.setNama(f.getName());
             //user.getText();
-            of.setUser(user.getText());
-            of.setCommand("konek");
-            kirim(of);
+            objf.setUser(user.getText());
+            objf.setCommand("konek");
+            kirim(objf);
             
         } catch (IOException ex) {
             Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -245,17 +254,44 @@ public class ServerForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                    
 
-    private void konek1ActionPerformed(java.awt.event.ActionEvent evt) {                                       
+    private void listActionPerformed(java.awt.event.ActionEvent evt) {                                     
         // TODO add your handling code here:
-    }                                      
+    }                                    
 
-    private void konek2ActionPerformed(java.awt.event.ActionEvent evt) {                                       
+    private void fileActionPerformed(java.awt.event.ActionEvent evt) {                                     
         // TODO add your handling code here:
-    }                                      
+        int returnVal = jFileChooser1.showOpenDialog(this);
+        if(returnVal == jFileChooser1.APPROVE_OPTION)
+        {
+            fileChoose = jFileChooser1.getSelectedFile();
+            JFileChooser fc = new JFileChooser();
+            
+            fnama = fileChoose.toString();
+            JOptionPane.showMessageDialog(ServerForm.this, fnama);
+            System.out.println("file read");
+        }
+        else{
+            System.out.println("File access cancelled by user.");
+        }
+    }                                    
 
-    private void konek3ActionPerformed(java.awt.event.ActionEvent evt) {                                       
-        // TODO add your handling code here:
-    }                                      
+    private void kirimActionPerformed(java.awt.event.ActionEvent evt) {                                      
+        try {
+            // TODO add your handling code here:
+            byte[] bytef = new byte[(int)fileChoose.length()];
+            DataInputStream diStream = new DataInputStream(new FileInputStream(fileChoose));
+            diStream.read(bytef);
+            ObjectFile objf = new ObjectFile();
+            objf.setIsi(bytef);
+            objf.setNama(fileChoose.getName());
+            objf.setCommand("kirim");
+            kirim(objf);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }                                     
 
     /**
      * @param args the command line arguments
@@ -285,29 +321,32 @@ public class ServerForm extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ServerForm().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ServerForm().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify                     
+    private javax.swing.JLabel Host;
+    private javax.swing.JLabel Port;
+    private javax.swing.JLabel User;
+    private javax.swing.JButton file;
     private javax.swing.JTextField host;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JList jList1;
-    private javax.swing.JList jList2;
+    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JButton kirim;
     private javax.swing.JButton konek;
-    private javax.swing.JButton konek1;
-    private javax.swing.JButton konek2;
-    private javax.swing.JButton konek3;
+    private javax.swing.JButton list;
     private javax.swing.JTextField port;
     private javax.swing.JTextField user;
     // End of variables declaration                   
+
+    //private FileFilter MyCustomFilter() {
+      //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //}
 }
+
+
